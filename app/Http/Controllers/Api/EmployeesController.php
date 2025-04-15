@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Validator;
 
 class EmployeesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum'); 
+    }
     public function index() 
     {
         $employees = Employee::get();
@@ -106,7 +110,7 @@ class EmployeesController extends Controller
     }
     public function update(Request $request,Employee $employee) 
     {
-         $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'en_name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'sex' => 'required|string|in:male,female',

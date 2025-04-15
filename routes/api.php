@@ -15,12 +15,22 @@ use App\Http\Controllers\Api\JobTitleCategoriesController;
 use App\Http\Controllers\Api\OrganizationsController;
 use App\Http\Controllers\Api\RegionsController;
 use App\Http\Controllers\Api\ZonesController;
+use App\Http\Controllers\Api\AuthController;
 
-// use App\Http\Controllers\IdentityCardTemplatesController;
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+// Protected routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/profile', [AuthController::class, 'profile']);
+    
+    Route::apiResource('employees', EmployeesController::class);
+});
 
 
 
-Route::apiResource('employees',EmployeesController::class);
+// Route::apiResource('employees',EmployeesController::class);
 
 Route::apiResource('identity-card-details',IdentityCardDetailsController::class);
 
