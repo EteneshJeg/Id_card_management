@@ -1,0 +1,54 @@
+[
+    {
+        "model-name": "IdentityCardTemplate",
+        "resource-file": "identity_card_templates.json"
+    },
+    {
+        "model-name": "Employee",
+        "resource-file": "employees.json"
+    },
+    {
+        "model-name": "IdentityCardDetail",
+        "resource-file": "identity_card_details.json"
+    },
+    {
+        "model-name": "IdentityCardTemplateDetail",
+        "resource-file": "identity_card_template_details.json"
+    },
+    {
+        "model-name": "JobTitleCategory",
+        "resource-file": "job_title_categories.json"
+    },
+    {
+        "model-name": "JobPosition",
+        "resource-file": "job_positions.json"
+    },
+    {
+        "model-name": "Organization",
+        "resource-file": "organizations.json"
+    },
+    {
+        "model-name": "OrganizationUnit",
+        "resource-file": "organization_units.json"
+    },
+    {
+        "model-name": "Salary",
+        "resource-file": "salaries.json"
+    },
+    {
+        "model-name": "MaritalStatus",
+        "resource-file": "marital_statuses.json"
+    },
+    {
+        "model-name": "Region",
+        "resource-file": "regions.json"
+    },
+    {
+        "model-name": "Zone",
+        "resource-file": "zones.json"
+    },
+    {
+        "model-name": "Woreda",
+        "resource-file": "woredas.json"
+    }
+]
