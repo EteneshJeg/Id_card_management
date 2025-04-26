@@ -16,6 +16,22 @@ use App\Http\Controllers\Api\OrganizationsController;
 use App\Http\Controllers\Api\RegionsController;
 use App\Http\Controllers\Api\ZonesController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\RolePermissionController;
+use App\Http\Controllers\Api\AdminDashboardController;
+
+
+Route::middleware(['auth:sanctum', 'role:admin'])->get('/admin-dashboard',  [AdminDashboardController::class, 'index']);
+
+
+Route::post('/permissions', [RolePermissionController::class, 'createPermission']);
+Route::post('/roles', [RolePermissionController::class, 'createRole']);
+Route::get('roles', [RolePermissionController::class, 'index']);
+Route::post('roles/{role_id}/permissions', [RolePermissionController::class, 'assignPermissions']);
+Route::post('/users/{user_id}/roles', [RolePermissionController::class, 'assignRoleToUser']);
+
+
+
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -24,13 +40,17 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile', [AuthController::class, 'profile']);
+
     
     Route::apiResource('employees', EmployeesController::class);
+
 });
 
 
 
+
 // Route::apiResource('employees',EmployeesController::class);
+Route::apiResource('users', UserController::class);
 
 Route::apiResource('identity-card-details',IdentityCardDetailsController::class);
 

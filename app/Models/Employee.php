@@ -43,7 +43,7 @@ class Employee extends Model
                   'salary_id',
                   'martial_status_id',
                   'nation',
-                  'employment_id',
+                  'employee_id',
                   'job_position_start_date',
                   'job_position_end_date',
                   'address',
@@ -125,19 +125,19 @@ class Employee extends Model
      *
      * @return App\Models\MartialStatus
      */
-    public function martialStatus()
+    public function maritalStatus()
     {
-        return $this->belongsTo('App\Models\MartialStatus','martial_status_id');
+        return $this->belongsTo('App\Models\MaritalStatus','marital_status_id');
     }
 
     /**
      * Get the employment for this model.
      *
-     * @return App\Models\Employment
+     * @return App\Models\Employee
      */
-    public function employment()
+    public function employee()
     {
-        return $this->belongsTo('App\Models\Employment','employment_id');
+        return $this->belongsTo('App\Models\Employee','employee_id');
     }
 
     /**
