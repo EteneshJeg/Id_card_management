@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable,HasRoles;
@@ -69,4 +70,13 @@ class User extends Authenticatable
             ? asset("storage/{$this->profile_image_path}")
             : null;
     }
+
+
+    // public function roles()
+    // {
+    //     return $this->belongsToMany(Spatie\Permission\Models\Role::class);
+    // }
+
+
+
 }

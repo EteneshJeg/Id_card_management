@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateIdentityCardDetailsTable extends Migration
 {
@@ -14,7 +15,7 @@ class CreateIdentityCardDetailsTable extends Migration
     {
         Schema::create('identity_card_details', function(Blueprint $table)
         {
-            $table->increments('id');
+            $table->id();
             $table->timestamps();
             $table->string('field_label')->nullable();
             $table->string('label_length')->nullable();

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class JobPosition extends Model
 {
-    
 
     /**
      * The database table used by the model.

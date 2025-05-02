@@ -29,7 +29,7 @@ class Woreda extends Model
      */
     protected $fillable = [
                     'name',
-                    'zone'
+                    'zone_id'
                 ];
 
     /**

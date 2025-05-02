@@ -26,7 +26,7 @@ class ZonesController extends Controller
         // Validate the request
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'region' => 'required|string|max:255',
+            'region_id' => 'required|exists:regions,id', // Use 'region_id' instead of 'region'
         ]);
 
         if ($validator->fails()) {
@@ -39,7 +39,7 @@ class ZonesController extends Controller
         // Create zone
         $zone = Zone::create([
             'name' => $request->name,
-            'region' => $request->region,
+            'region_id' => $request->region_id, // Corrected this line to 'region_id'
         ]);
 
         return response()->json([
@@ -58,7 +58,7 @@ class ZonesController extends Controller
         // Validate the request
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'region' => 'required|string|max:255',
+            'region_id' => 'required|exists:regions,id', // Use 'region_id' instead of 'region'
         ]);
 
         if ($validator->fails()) {
@@ -71,7 +71,7 @@ class ZonesController extends Controller
         // Update zone
         $zone->update([
             'name' => $request->name,
-            'region' => $request->region,
+            'region_id' => $request->region_id, // Corrected this line to 'region_id'
         ]);
 
         return response()->json([

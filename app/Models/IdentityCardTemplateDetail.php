@@ -51,20 +51,21 @@ class IdentityCardTemplateDetail extends Model
      *
      * @return App\Models\IdentityCardTemplate
      */
-    public function identityCardTemplate()
+    public function identityCardTemplate(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo('App\Models\IdentityCardTemplate','identity_card_template_id');
+        return $this->belongsTo(IdentityCardTemplate::class, 'identity_card_template_id');
     }
 
+    public function identityCardDetail(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(IdentityCardDetail::class, 'identity_card_detail_id');
+    }
     /**
      * Get the identityCardDetail for this model.
      *
      * @return App\Models\IdentityCardDetail
      */
-    public function identityCardDetail()
-    {
-        return $this->belongsTo('App\Models\IdentityCardDetail','identity_card_detail_id');
-    }
+
 
 
 

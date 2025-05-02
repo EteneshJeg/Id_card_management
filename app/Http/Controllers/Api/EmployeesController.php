@@ -45,41 +45,6 @@ class EmployeesController extends Controller
 
     public function store(Request $request) 
     {
-        $validator = Validator::make($request->all(), [
-            'en_name' => 'required|string|max:255',
-            'title' => 'required|string|max:255',
-            'sex' => 'required|string|in:male,female',
-            'date_of_birth' => 'nullable|date',
-            'joined_date' => 'nullable|date',
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Updated validation
-            'phone_number' => 'required|string|max:15',
-            'organization_unit_id' => 'required|integer',
-            'job_position_id' => 'required|integer',
-            'job_title_category_id' => 'required|integer',
-            'salary_id' => 'required|integer',
-            'martial_status_id' => 'required|integer',
-            'nation' => 'required|string|max:255',
-            'employee_id' => 'required|integer',
-            'job_position_start_date' => 'nullable|date',
-            'job_position_end_date' => 'nullable|date',
-            'address' => 'nullable|string|max:255',
-            'house_number' => 'nullable|string|max:50',
-            'region_id' => 'required|integer',
-            'zone_id' => 'required|integer',
-            'woreda_id' => 'required|integer',
-            'status' => 'required|string|max:50',
-            'id_issue_date' => 'nullable|date',
-            'id_expire_date' => 'nullable|date',
-            'id_status' => 'required|string|max:50',
-        ]);
-
-        if($validator->fails()){
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
         // Handle photo upload
         $photoPath = null;
         if ($request->hasFile('photo')) {
@@ -100,7 +65,6 @@ class EmployeesController extends Controller
             'salary_id' => $request->salary_id,
             'martial_status_id' => $request->martial_status_id,
             'nation' => $request->nation,
-            'employee_id' => $request->employee_id,
             'job_position_start_date' => $request->job_position_start_date,
             'job_position_end_date' => $request->job_position_end_date,
             'address' => $request->address,
@@ -141,7 +105,6 @@ class EmployeesController extends Controller
             'salary_id' => 'required|integer',
             'martial_status_id' => 'required|integer',
             'nation' => 'required|string|max:255',
-            'employee_id' => 'required|integer',
             'job_position_start_date' => 'nullable|date',
             'job_position_end_date' => 'nullable|date',
             'address' => 'nullable|string|max:255',
@@ -187,7 +150,6 @@ class EmployeesController extends Controller
             'salary_id' => $request->salary_id,
             'martial_status_id' => $request->martial_status_id,
             'nation' => $request->nation,
-            'employee_id' => $request->employee_id,
             'job_position_start_date' => $request->job_position_start_date,
             'job_position_end_date' => $request->job_position_end_date,
             'address' => $request->address,

@@ -25,13 +25,14 @@ class OrganizationUnitController extends Controller
         $validator = Validator::make($request->all(), [
             'en_name' => 'required|string|max:255',
             'en_acronym' => 'required|string|max:255',
-            'parent' => 'required|string|max:255',
-            'reports_to' => 'required|string|max:255',
+            'parent' => 'nullable|exists:organization_units,id',
+            'reports_to' => 'nullable|exists:organization_units,id',
             'location' => 'required|string|max:255',
-            'is_root_unit' => 'required|string|max:255',
-            'is_category' => 'required|string|max:255',
+            'is_root_unit' => 'required|boolean',
+            'is_category' => 'required|boolean',
             'synchronize_status' => 'required|string|max:255',
-            'chairman' => 'required|string|max:255',
+            'organization_id' => 'required|exists:organizations,id',
+            'chairman' => 'nullable|exists:users,id',
         ]);
 
         // 2. Return validation errors if any
@@ -43,7 +44,8 @@ class OrganizationUnitController extends Controller
         }
 
         // 3. Create the organization unit with validated data
-        $organizationUnit = OrganizationUnit::create($request->all());
+        $validatedData = $validator->validated();
+        $organizationUnit = OrganizationUnit::create($validatedData);
 
         // 4. Return JSON response with the created resource
         return response()->json([
@@ -63,13 +65,14 @@ class OrganizationUnitController extends Controller
         $validator = Validator::make($request->all(), [
             'en_name' => 'required|string|max:255',
             'en_acronym' => 'required|string|max:255',
-            'parent' => 'required|string|max:255',
-            'reports_to' => 'required|string|max:255',
+            'parent' => 'nullable|exists:organization_units,id',
+            'reports_to' => 'nullable|exists:organization_units,id',
             'location' => 'required|string|max:255',
-            'is_root_unit' => 'required|string|max:255',
-            'is_category' => 'required|string|max:255',
+            'is_root_unit' => 'required|boolean',
+            'is_category' => 'required|boolean',
             'synchronize_status' => 'required|string|max:255',
-            'chairman' => 'required|string|max:255',
+            'organization_id' => 'required|exists:organizations,id',
+            'chairman' => 'nullable|exists:users,id',
         ]);
 
         // 2. Return validation errors if any
@@ -81,7 +84,8 @@ class OrganizationUnitController extends Controller
         }
 
         // 3. Update the organization unit with validated data
-        $organizationUnit->update($request->all());
+        $validatedData = $validator->validated();
+        $organizationUnit->update($validatedData);
 
         // 4. Return JSON response with the updated resource
         return response()->json([

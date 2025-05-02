@@ -47,6 +47,12 @@ class IdentityCardTemplate extends Model
      * @var array
      */
     protected $casts = [];
+
+
+    public function details()
+    {
+        return $this->belongsToMany(IdentityCardDetail::class, 'identity_card_template_details');
+    }
     
 
 

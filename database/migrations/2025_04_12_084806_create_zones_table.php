@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
 
 class CreateZonesTable extends Migration
 {
@@ -14,10 +16,11 @@ class CreateZonesTable extends Migration
     {
         Schema::create('zones', function(Blueprint $table)
         {
-            $table->increments('id');
+            $table->id();
             $table->timestamps();
             $table->string('name', 255)->nullable();
-            $table->string('region')->nullable();
+
+            $table->foreignId('region_id')->constrained()->onDelete('cascade');
 
         });
     }

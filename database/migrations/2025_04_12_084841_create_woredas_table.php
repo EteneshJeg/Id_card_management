@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
 
 class CreateWoredasTable extends Migration
 {
@@ -14,10 +16,11 @@ class CreateWoredasTable extends Migration
     {
         Schema::create('woredas', function(Blueprint $table)
         {
-            $table->increments('id');
+            $table->id();
             $table->timestamps();
             $table->string('name', 255)->nullable();
-            $table->string('zone')->nullable();
+
+            $table->foreignId('zone_id')->constrained('zones');
 
         });
     }

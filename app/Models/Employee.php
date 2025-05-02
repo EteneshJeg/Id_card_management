@@ -43,7 +43,7 @@ class Employee extends Model
                   'salary_id',
                   'martial_status_id',
                   'nation',
-                  'employee_id',
+                  'employment_id',
                   'job_position_start_date',
                   'job_position_end_date',
                   'address',
@@ -133,12 +133,6 @@ class Employee extends Model
     /**
      * Get the employment for this model.
      *
-     * @return App\Models\Employee
-     */
-    public function employee()
-    {
-        return $this->belongsTo('App\Models\Employee','employee_id');
-    }
 
     /**
      * Get the region for this model.
@@ -169,6 +163,12 @@ class Employee extends Model
     {
         return $this->belongsTo('App\Models\Woreda','woreda_id');
     }
+
+    
+    // public function organizationUnits()
+    // {
+    //     return $this->hasMany(OrganizationUnit::class, 'chairman_id');
+    // }
 
     /**
      * Set the date_of_birth.
@@ -305,5 +305,9 @@ class Employee extends Model
     {
         return $value ? Carbon::parse($value)->format('Y-m-d') : null;
     }
+    
+
+
+
 
 }

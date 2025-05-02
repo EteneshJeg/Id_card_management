@@ -29,9 +29,9 @@ class IdentityCardTemplateDetailsController extends Controller
     }
     public function store(Request $request) 
     {
-            $validator = Validator::make($request->all(), [
-            'identity_card_template_id' => 'required|string|max:50',
-            'identity_card_detail_id' => 'required|string|max:255',
+        $validator = Validator::make($request->all(), [
+            'identity_card_template_id' => 'required|integer|exists:identity_card_templates,id',
+            'identity_card_detail_id' => 'required|integer|exists:identity_card_details,id',
         ]);
 
         if ($validator->fails()) {
@@ -57,9 +57,9 @@ class IdentityCardTemplateDetailsController extends Controller
 
     public function update(Request $request, IdentityCardTemplateDetail $identityCardTemplateDetail) 
     {
-            $validator = Validator::make($request->all(), [
-            'identity_card_template_id' => 'required|string|max:50',
-            'identity_card_detail_id' => 'required|string|max:255',
+        $validator = Validator::make($request->all(), [
+            'identity_card_template_id' => 'required|integer|exists:identity_card_templates,id',
+            'identity_card_detail_id' => 'required|integer|exists:identity_card_details,id',
         ]);
 
         if ($validator->fails()) {

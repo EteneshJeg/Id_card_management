@@ -24,13 +24,13 @@ class JobPositionsController extends Controller
     public function store(Request $request) 
     {
         $validator = Validator::make($request->all(), [
-            'organization_unit_id' => 'required|integer',
-            'job_title_category_id' => 'required|integer',
+            'organization_unit_id' => 'required|exists:organization_units,id',
+            'job_title_category_id' => 'required|exists:job_title_categories,id',
             'job_description' => 'required|string|max:255',
             'position_code' => 'nullable|string|max:255',
-            'position_id' => 'required|integer',
-            'salary_id' => 'required|integer',
-            'status' => 'required|string|max:255',
+            'position_id' => 'nullable|exists:positions,id', 
+            'salary_id' => 'required|exists:salaries,id',
+            'status' => 'required|string|max:255|in:active,inactive,pending' 
         ]);
 
         if ($validator->fails()) {
@@ -39,6 +39,9 @@ class JobPositionsController extends Controller
                 'errors' => $validator->errors(),
             ], 422);
         }
+
+        $validated = $validator->validated();
+        $jobPosition = JobPosition::create($validated);
 
         $jobPosition = JobPosition::create($request->only([
             'organization_unit_id',
@@ -64,13 +67,13 @@ class JobPositionsController extends Controller
     public function update(Request $request, JobPosition $jobPosition) 
     {
         $validator = Validator::make($request->all(), [
-            'organization_unit_id' => 'required|integer',
-            'job_title_category_id' => 'required|integer',
+            'organization_unit_id' => 'required|exists:organization_units,id',
+            'job_title_category_id' => 'required|exists:job_title_categories,id',
             'job_description' => 'required|string|max:255',
             'position_code' => 'nullable|string|max:255',
-            'position_id' => 'required|integer',
-            'salary_id' => 'required|integer',
-            'status' => 'required|string|max:255',
+            'position_id' => 'nullable|exists:positions,id', 
+            'salary_id' => 'required|exists:salaries,id',
+            'status' => 'required|string|max:255|in:active,inactive,pending' 
         ]);
 
         if ($validator->fails()) {
@@ -79,6 +82,10 @@ class JobPositionsController extends Controller
                 'errors' => $validator->errors(),
             ], 422);
         }
+
+
+        $validated = $validator->validated();
+        $jobPosition->update($validated);
 
         $jobPosition->update($request->only([
             'organization_unit_id',

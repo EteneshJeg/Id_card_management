@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateIdentityCardTemplatesTable extends Migration
 {
@@ -14,7 +15,7 @@ class CreateIdentityCardTemplatesTable extends Migration
     {
         Schema::create('identity_card_templates', function(Blueprint $table)
         {
-            $table->increments('id');
+            $table->id();
             $table->string('type')->nullable();
             $table->string('file', 255)->nullable();
             $table->string('sample_file')->nullable();

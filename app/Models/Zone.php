@@ -29,7 +29,7 @@ class Zone extends Model
      */
     protected $fillable = [
                     'name',
-                    'region'
+                    'region_id'
                 ];
 
     /**

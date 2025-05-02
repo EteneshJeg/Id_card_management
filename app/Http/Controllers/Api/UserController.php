@@ -72,8 +72,8 @@ class UserController extends Controller
             'name' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:6',
-            'first_time' => 'required|boolean',
-            'active' => 'required|boolean',
+            'first_time' => 'sometimes|required|boolean',
+            'active' => 'sometimes|required|boolean',
             'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 

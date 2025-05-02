@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateIdentityCardTemplateDetailsTable extends Migration
 {
@@ -16,8 +17,12 @@ class CreateIdentityCardTemplateDetailsTable extends Migration
         {
             $table->increments('id');
             $table->timestamps();
-            $table->integer('identity_card_template_id')->unsigned()->nullable()->index();
-            $table->integer('identity_card_detail_id')->unsigned()->nullable()->index();
+
+            $table->foreignId('identity_card_template_id')
+                ->constrained('identity_card_templates')
+                ->onDelete('cascade');
+
+            $table->foreignId('identity_card_detail_id')->constrained('identity_card_details'); 
 
         });
     }
@@ -29,6 +34,6 @@ class CreateIdentityCardTemplateDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('identity_card_template_details');
+        Schema::dropIfExists('identity_card_template_details');
     }
 }

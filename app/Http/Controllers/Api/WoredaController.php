@@ -25,7 +25,7 @@ class WoredaController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'zone' => 'required|string|max:255',
+            'zone_id' => 'required|exists:zones,id', // validate zone_id exists
         ]);
 
         if ($validator->fails()) {
@@ -37,7 +37,7 @@ class WoredaController extends Controller
 
         $woreda = Woreda::create([
             'name' => $request->name,
-            'zone' => $request->zone,
+            'zone_id' => $request->zone_id,
         ]);
 
         return response()->json([
@@ -57,7 +57,7 @@ class WoredaController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'zone' => 'required|string|max:255',
+            'zone_id' => 'required|exists:zones,id',
         ]);
 
         if ($validator->fails()) {
@@ -69,7 +69,7 @@ class WoredaController extends Controller
 
         $woreda->update([
             'name' => $request->name,
-            'zone' => $request->zone,
+            'zone_id' => $request->zone_id,
         ]);
 
         return response()->json([

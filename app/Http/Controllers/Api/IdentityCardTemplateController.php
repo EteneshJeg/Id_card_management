@@ -71,11 +71,12 @@ class IdentityCardTemplateController extends Controller
 
     public function update(Request $request, IdentityCardTemplate $identityCardTemplate) 
     {
+
         $validator = Validator::make($request->all(), [
-            'type' => 'required|string|max:50',
-            'file' => 'sometimes|file|mimes:pdf,doc,docx|max:2048', // Changed to optional file
-            'sample_file' => 'nullable|file|mimes:pdf,doc,docx|max:2048', // Changed to file type
-            'status' => 'required|string|max:50',
+            'type' => 'sometimes|string|max:50',
+            'file' => 'sometimes|file|mimes:pdf,doc,docx|max:2048', // Changed to "sometimes"
+            'sample_file' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'status' => 'sometimes|string|max:50',
         ]);
 
         if ($validator->fails()) {

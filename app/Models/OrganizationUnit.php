@@ -36,8 +36,27 @@ class OrganizationUnit extends Model
                     'is_root_unit',
                     'is_category',
                     'synchronize_status',
-                    'chairman'
+                    'organization_id',
+                    'chairman'                    
                 ];
+
+    public function organization() {
+    return $this->belongsTo(Organization::class);
+    }
+
+    public function parentUnit() {
+        return $this->belongsTo(OrganizationUnit::class, 'parent');
+    }
+
+    public function reportingUnit() {
+        return $this->belongsTo(OrganizationUnit::class, 'reports_to');
+    }
+
+    // Assuming chairman references a User model
+    public function chairperson() {
+        return $this->belongsTo(User::class, 'chairman');
+    }
+
 
     /**
      * The attributes that should be mutated to dates.
@@ -52,7 +71,6 @@ class OrganizationUnit extends Model
      * @var array
      */
     protected $casts = [];
-    
 
 
 
