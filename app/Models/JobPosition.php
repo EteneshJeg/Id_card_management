@@ -32,7 +32,6 @@ class JobPosition extends Model
                     'job_description',
                     'position_code',
                     'position_id',
-                    'salary_id',
                     'status'
                 ];
 
@@ -80,16 +79,7 @@ class JobPosition extends Model
         return $this->belongsTo('App\Models\Position','position_id');
     }
 
-    /**
-     * Get the salary for this model.
-     *
-     * @return App\Models\Salary
-     */
-    public function salary()
-    {
-        return $this->belongsTo('App\Models\Salary','salary_id');
-    }
-
+    
 
 
 }

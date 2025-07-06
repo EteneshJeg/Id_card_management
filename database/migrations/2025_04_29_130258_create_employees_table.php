@@ -43,7 +43,6 @@ class CreateEmployeesTable extends Migration
 
             $table->foreignId('organization_unit_id')->constrained('organization_units');
             $table->foreignId('job_title_category_id')->constrained('job_title_categories');
-            $table->foreignId('salary_id')->constrained('salaries');
             $table->foreignId('region_id')->constrained('regions');
             $table->foreignId('zone_id')->constrained('zones');
             $table->foreignId('woreda_id')->constrained('woredas');

@@ -36,9 +36,8 @@ class JobPositionsController extends Controller
         $organizationUnits = OrganizationUnit::pluck('id','id')->all();
 $jobTitleCategories = JobTitleCategory::pluck('name','id')->all();
 $positions = Position::pluck('id','id')->all();
-$salaries = Salary::pluck('id','id')->all();
         
-        return view('job_positions.create', compact('organizationUnits','jobTitleCategories','positions','salaries'));
+        return view('job_positions.create', compact('organizationUnits','jobTitleCategories','positions'));
     }
 
     /**
@@ -86,9 +85,8 @@ $salaries = Salary::pluck('id','id')->all();
         $organizationUnits = OrganizationUnit::pluck('id','id')->all();
 $jobTitleCategories = JobTitleCategory::pluck('name','id')->all();
 $positions = Position::pluck('id','id')->all();
-$salaries = Salary::pluck('id','id')->all();
 
-        return view('job_positions.edit', compact('jobPosition','organizationUnits','jobTitleCategories','positions','salaries'));
+        return view('job_positions.edit', compact('jobPosition','organizationUnits','jobTitleCategories','positions'));
     }
 
     /**
@@ -148,7 +146,6 @@ $salaries = Salary::pluck('id','id')->all();
             'job_description' => 'string|min:1|nullable',
             'position_code' => 'string|min:1|nullable',
             'position_id' => 'nullable',
-            'salary_id' => 'nullable',
             'status' => 'string|min:1|nullable', 
         ];
 

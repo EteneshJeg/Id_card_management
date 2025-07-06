@@ -39,7 +39,7 @@ Route::resource('identity_card_templates', IdentityCardTemplatesController::clas
     'update' => 'identity_card_templates.identity_card_template.update',
     'destroy' => 'identity_card_templates.identity_card_template.destroy',
 ]);
-require __DIR__.'/auth.php';
+require __DIR__ .'/auth.php';
 
 Route::group([
     'prefix' => 'employees',

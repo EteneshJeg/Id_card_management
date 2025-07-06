@@ -28,8 +28,6 @@ class JobPositionsController extends Controller
             'job_title_category_id' => 'required|exists:job_title_categories,id',
             'job_description' => 'required|string|max:255',
             'position_code' => 'nullable|string|max:255',
-            'position_id' => 'nullable|exists:positions,id', 
-            'salary_id' => 'required|exists:salaries,id',
             'status' => 'required|string|max:255|in:active,inactive,pending' 
         ]);
 
@@ -42,16 +40,6 @@ class JobPositionsController extends Controller
 
         $validated = $validator->validated();
         $jobPosition = JobPosition::create($validated);
-
-        $jobPosition = JobPosition::create($request->only([
-            'organization_unit_id',
-            'job_title_category_id',
-            'job_description',
-            'position_code',
-            'position_id',
-            'salary_id',
-            'status',
-        ]));
 
         return response()->json([
             'message' => 'Job position registered successfully.',
@@ -71,8 +59,6 @@ class JobPositionsController extends Controller
             'job_title_category_id' => 'required|exists:job_title_categories,id',
             'job_description' => 'required|string|max:255',
             'position_code' => 'nullable|string|max:255',
-            'position_id' => 'nullable|exists:positions,id', 
-            'salary_id' => 'required|exists:salaries,id',
             'status' => 'required|string|max:255|in:active,inactive,pending' 
         ]);
 
@@ -86,16 +72,6 @@ class JobPositionsController extends Controller
 
         $validated = $validator->validated();
         $jobPosition->update($validated);
-
-        $jobPosition->update($request->only([
-            'organization_unit_id',
-            'job_title_category_id',
-            'job_description',
-            'position_code',
-            'position_id',
-            'salary_id',
-            'status',
-        ]));
 
         return response()->json([
             'message' => 'Job position updated successfully.',

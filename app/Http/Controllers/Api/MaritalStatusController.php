@@ -41,9 +41,15 @@ class MaritalStatusController extends Controller
         }
 
                     
+        // $maritalStatus = MaritalStatus::create([
+        //     'name' => 'required|string|max:255',
+        //     'description' => 'required|string|max:255',
+
+        // ]);
+
         $maritalStatus = MaritalStatus::create([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'name' => $request->name,
+            'description' => $request->description,
 
         ]);
 
@@ -77,8 +83,8 @@ class MaritalStatusController extends Controller
         }
 
         $maritalStatus->update([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'name' => $request->name,
+            'description' => $request->description,
         ]);
 
         return response() ->json([

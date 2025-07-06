@@ -26,7 +26,6 @@ class CreateJobPositionsTable extends Migration
             // Change the job_title_category_id to match the unsignedBigInteger type of id in job_title_categories
             $table->unsignedBigInteger('job_title_category_id'); 
             $table->foreign('job_title_category_id')->references('id')->on('job_title_categories')->onDelete('cascade');
-            $table->foreignId('salary_id')->constrained('salaries');
         });
     }
 

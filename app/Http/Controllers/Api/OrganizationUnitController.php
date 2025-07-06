@@ -26,13 +26,13 @@ class OrganizationUnitController extends Controller
             'en_name' => 'required|string|max:255',
             'en_acronym' => 'required|string|max:255',
             'parent' => 'nullable|exists:organization_units,id',
-            'reports_to' => 'nullable|exists:organization_units,id',
+            'reports_to' => 'nullable|string|max:255',
             'location' => 'required|string|max:255',
             'is_root_unit' => 'required|boolean',
             'is_category' => 'required|boolean',
             'synchronize_status' => 'required|string|max:255',
-            'organization_id' => 'required|exists:organizations,id',
-            'chairman' => 'nullable|exists:users,id',
+            'organization_id' => 'nullable|numeric',
+            'chairman' => 'nullable|numeric',
         ]);
 
         // 2. Return validation errors if any
@@ -66,13 +66,13 @@ class OrganizationUnitController extends Controller
             'en_name' => 'required|string|max:255',
             'en_acronym' => 'required|string|max:255',
             'parent' => 'nullable|exists:organization_units,id',
-            'reports_to' => 'nullable|exists:organization_units,id',
+            'reports_to' => 'nullable|string|max:255',
             'location' => 'required|string|max:255',
             'is_root_unit' => 'required|boolean',
             'is_category' => 'required|boolean',
             'synchronize_status' => 'required|string|max:255',
-            'organization_id' => 'required|exists:organizations,id',
-            'chairman' => 'nullable|exists:users,id',
+            'organization_id' => 'nullable|numeric',
+            'chairman' => 'nullable|numeric',
         ]);
 
         // 2. Return validation errors if any

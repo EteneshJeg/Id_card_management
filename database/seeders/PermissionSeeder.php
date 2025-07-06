@@ -36,13 +36,31 @@ class PermissionSeeder extends Seeder
         foreach ($models as $model) {
             foreach ($actions as $action) {
                 Permission::firstOrCreate([
-                    'name' => "$action $model"
+                    'name' => "$action $model",
+                    'guard_name' => 'web'
                 ]);
             }
         }
 
-        // Create Super Admin role with all permissions
-        $adminRole = Role::firstOrCreate(['name' => 'Super Admin']);
+        $adminRole = Role::firstOrCreate([
+            'name' => 'Super Admin',
+            'guard_name' => 'web'
+        ]);
+
         $adminRole->syncPermissions(Permission::all());
+
+
+        // Optional Employee role
+        $employeeRole = Role::firstOrCreate([
+            'name' => 'Employee',
+            'guard_name' => 'web'
+        ]);
+
+        $employeePermissions = Permission::whereIn('name', [
+            'read IdentityCardDetail',
+            'read Organization',
+        ])->get();
+
+        $employeeRole->syncPermissions($employeePermissions);
     }
 }
