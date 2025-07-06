@@ -100,4 +100,17 @@ class MaritalStatusController extends Controller
         ],200);
 
     }
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (!is_array($ids) || empty($ids)) {
+            return response()->json(['message' => 'No IDs provided'], 400);
+        }
+
+        MaritalStatus::whereIn('id', $ids)->delete();
+
+        return response()->json(['message' => 'Selected marital statuses deleted successfully'], 200);
+    }
+
 }

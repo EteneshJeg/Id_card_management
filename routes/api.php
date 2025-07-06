@@ -51,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('identity-card-template-details', IdentityCardTemplateDetailsController::class);
     Route::apiResource('organizations', OrganizationsController::class);
     Route::apiResource('marital-status', MaritalStatusController::class);
+    Route::post('/marital-status/delete-bunch', [MaritalStatusController::class, 'bulkDestroy']);
     Route::apiResource('regions', RegionsController::class);
     Route::apiResource('zones', ZonesController::class);
     Route::apiResource('woreda', WoredaController::class);
