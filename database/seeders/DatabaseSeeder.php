@@ -37,8 +37,8 @@ class DatabaseSeeder extends Seeder
         $employee->assignRole('Employee');
 
         // 4. Optionally create more users to reach a total of 5
-        if (User::count() < 5) {
-            User::factory(5 - User::count())->create();
-        }
+        // if (User::count() < 5) {
+        //     User::factory(5 - User::count())->create();
+        // }
     }
 }

@@ -21,18 +21,21 @@ class RoleController extends Controller
             'permissions' => 'array'
         ]);
 
-        
+
         $permissions = Permission::whereIn('name', $request->permissions)->get();
 
-        $role = Role::create(['name' => $request->name]);
-        
+        $role = Role::create([
+            'name' => $request->name,
+            'guard_name' => 'web'
+        ]);
+
 
 
         if ($request->has('permissions')) {
             $role->syncPermissions($permissions);
         }
 
-        
+
         return response()->json($role, 200);
     }
 

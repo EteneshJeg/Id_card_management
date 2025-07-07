@@ -8,32 +8,33 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
 
     public function index()
     {
-        $users = User::all();
-        if($users->count() > 0) {
-            return response()->json($users,200);
+        $users = User::with('roles')->get();
+        if ($users->count() > 0) {
+            return response()->json($users, 200);
         }
 
-        return response()->json(['message' => 'No users found'],200);
+        return response()->json(['message' => 'No users found'], 200);
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'=> 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'first_time' => 'boolean',
-            'active' => 'boolean',
+            'first_time' => 'nullable|boolean',
+            'active' => 'nullable|boolean',
             'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validation failed',
                 'errors' => $validator->errors(),
@@ -41,18 +42,23 @@ class UserController extends Controller
         }
 
         $imagePath = null;
-        if($request->hasFile('profile_image')) {
+        if ($request->hasFile('profile_image')) {
             $imagePath = $request->file('profile_image')->store('profile_images', 'public');
         }
 
         $user = User::create([
-            'name'=> $request->name,
-            'email' =>$request->email,
+            'name' => $request->name,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
             'first_time' => $request->first_time ?? true,
             'active' => $request->active ?? true,
             'profile_image_path' => $imagePath,
         ]);
+
+        $roles = Role::whereIn('name', $request->roles)->get();
+
+
+        $user->assignRole($roles);
 
         return response()->json([
             'message' => 'User created successfully',
@@ -119,6 +125,3 @@ class UserController extends Controller
         ], 200);
     }
 }
-
-
-
