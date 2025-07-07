@@ -13,12 +13,8 @@ class JobPositionsController extends Controller
     public function index() 
     {
         $jobPositions = JobPosition::all();
+        return JobPositionResource::collection($jobPositions);
 
-        if ($jobPositions->count() > 0) {
-            return JobPositionResource::collection($jobPositions);
-        } else {
-            return response()->json(['message' => 'No record available'], 200);
-        }
     }
 
     public function store(Request $request) 
@@ -87,4 +83,22 @@ class JobPositionsController extends Controller
             'message' => 'Job position deleted successfully.',
         ], 200);
     }
+    public function deleteBunch(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (!is_array($ids) || empty($ids)) {
+            return response()->json([
+                'message' => 'Invalid or empty list of IDs.',
+            ], 400);
+        }
+
+        JobPosition::whereIn('id', $ids)->delete();
+
+        return response()->json([
+            'message' => "$deleted job positions deleted successfully.",
+            'deleted_ids' => $ids,
+        ], 200);
+    }
+
 }

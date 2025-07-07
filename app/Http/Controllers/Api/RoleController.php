@@ -49,11 +49,17 @@ class RoleController extends Controller
         $role->update(['name' => $request->name]);
 
         if ($request->has('permissions')) {
-            $role->syncPermissions($request->permissions);
+            // Make sure you're fetching Permission models
+            $permissions = Permission::whereIn('name', $request->permissions)
+                ->where('guard_name', $role->guard_name) // Match the guard!
+                ->get();
+
+            $role->syncPermissions($permissions);
         }
 
         return response()->json($role);
     }
+
 
     public function destroy(Role $role)
     {
