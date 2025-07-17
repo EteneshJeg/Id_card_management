@@ -21,8 +21,11 @@ use App\Http\Controllers\Api\{
     ZonesController,
     WoredaController,
     AdminDashboardController,
-    RoleController
+    RoleController,
+    EmployeeIdentityCardsController
+    
 };
+
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -85,4 +88,5 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-Route::apiResource('identity-card-templates', IdentityCardTemplatesController::class);
+Route::apiResource('identity-card-templates', IdentityCardTemplateController::class);
+Route::apiResource('employee-identity-cards',EmployeeIdentityCardsController::class);

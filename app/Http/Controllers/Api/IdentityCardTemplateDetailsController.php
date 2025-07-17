@@ -28,27 +28,34 @@ class IdentityCardTemplateDetailsController extends Controller
 
     }
     public function store(Request $request) 
-    {
-        $validator = Validator::make($request->all(), [
-            'identity_card_template_id' => 'required|integer|exists:identity_card_templates,id',
-            'identity_card_detail_id' => 'required|integer|exists:identity_card_details,id',
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        '*.identity_card_template_id' => 'required|integer|exists:identity_card_templates,id',
+        '*.identity_card_detail_id' => 'required|integer|exists:identity_card_details,id',
+        '*.employee_id' => 'required|integer|exists:employees,id',
+        '*.text_content' => 'nullable|string|max:255',
+        '*.image_file' => 'nullable|string|max:255'
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'error' => $validator->messages(),
-            ], 422);
-        }
-
-        $identityCardTemplateDetail = IdentityCardTemplateDetail::create($request->all());
-
+    if ($validator->fails()) {
         return response()->json([
-            'message' => 'Identity Card Template Details created successfully.',
-            'data' => new IdentityCardTemplateDetailsResource($identityCardTemplateDetail)
-        ], 200);
-
+            'message' => 'Validation failed',
+            'error' => $validator->messages(),
+        ], 422);
     }
+
+    $createdRecords = [];
+
+    foreach ($request->all() as $item) {
+        $createdRecords[] = IdentityCardTemplateDetail::create($item);
+    }
+
+    return response()->json([
+        'message' => 'Identity Card Template Details created successfully.',
+        'data' => IdentityCardTemplateDetailsResource::collection(collect($createdRecords))
+    ], 200);
+}
+
 
     public function show(IdentityCardTemplateDetail $identityCardTemplateDetail) 
     {
@@ -58,8 +65,11 @@ class IdentityCardTemplateDetailsController extends Controller
     public function update(Request $request, IdentityCardTemplateDetail $identityCardTemplateDetail) 
     {
         $validator = Validator::make($request->all(), [
-            'identity_card_template_id' => 'required|integer|exists:identity_card_templates,id',
-            'identity_card_detail_id' => 'required|integer|exists:identity_card_details,id',
+            '*.identity_card_template_id' => 'required|integer|exists:identity_card_templates,id',
+            '*.identity_card_detail_id' => 'required|integer|exists:identity_card_details,id',
+            '*.employee_id'=>'required|integer|exists:employees,id',
+            '*.text_content'=>'nullable|string|max:255',
+            '*.image_file'=>'nullable|string|max:255'
         ]);
 
         if ($validator->fails()) {

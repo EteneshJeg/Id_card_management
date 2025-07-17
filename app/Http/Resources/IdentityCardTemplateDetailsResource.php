@@ -18,12 +18,12 @@ class IdentityCardTemplateDetailsResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'type' => $this->type,
-            'file' => $this->file,
-            'file_url' => $this->file ? asset("storage/{$this->file}") : null,
-            'sample_file' => $this->sample_file,
-            'sample_file_url' => $this->sample_file ? asset("storage/{$this->sample_file}") : null,
-            'status' => $this->status,
+            'identity_card_template_id' => $this->identity_card_template_id,
+            'identity_card_detail_id' => $this->identity_card_detail_id,
+            'employee_id'=>$this->employee_id,
+            'text_content'=>$this->text_content,
+            'image_file'=>$this->image_file,
+            
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
     ];

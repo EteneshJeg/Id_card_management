@@ -30,8 +30,8 @@ class IdentityCardTemplateController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'type' => 'required|string|max:50',
-            'file' => 'required|file|mimes:pdf,doc,docx|max:2048', // Changed to file type
-            'sample_file' => 'nullable|file|mimes:pdf,doc,docx|max:2048', // Changed to file type
+            'file' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png,svg,webp|max:2048', // Changed to file type
+            'sample_file' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,svg,webp|max:2048', // Changed to file type
             'status' => 'required|string|max:50',
         ]);
 
@@ -74,8 +74,8 @@ class IdentityCardTemplateController extends Controller
 
         $validator = Validator::make($request->all(), [
             'type' => 'sometimes|string|max:50',
-            'file' => 'sometimes|file|mimes:pdf,doc,docx|max:2048', // Changed to "sometimes"
-            'sample_file' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'file' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png,svg,webp|max:2048', // Changed to file type
+            'sample_file' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png,svg,webp|max:2048', 
             'status' => 'sometimes|string|max:50',
         ]);
 

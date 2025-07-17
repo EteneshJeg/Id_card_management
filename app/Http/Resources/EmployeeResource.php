@@ -24,7 +24,7 @@ class EmployeeResource extends JsonResource
             'sex' => $this->sex,
             'date_of_birth' => $this->date_of_birth,
             'joined_date' => $this->joined_date,
-            'photo_url' => $this->photo ? asset("storage/{$this->photo}") : null,
+            'photo_url' => $this->photo ,
             'phone_number' => $this->phone_number,
             
             // Relationships

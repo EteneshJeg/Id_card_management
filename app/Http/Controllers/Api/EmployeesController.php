@@ -8,6 +8,7 @@ use App\Http\Resources\EmployeeResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class EmployeesController extends Controller
 {
@@ -22,9 +23,9 @@ class EmployeesController extends Controller
         'organizationUnit',
         'jobPosition',
         'jobTitleCategory',
-        'salary',
+       //'salary',
         'maritalStatus',
-        'employee',
+       // 'employee',
         'region',
         'zone',
         'woreda'
@@ -32,7 +33,7 @@ class EmployeesController extends Controller
 
 
 
-        $employees = Employee::get();
+      //  $employees = Employee::get();
         if($employees->count() > 0)
         {
             return EmployeeResource::collection($employees);
@@ -47,9 +48,7 @@ class EmployeesController extends Controller
     {
         // Handle photo upload
         $photoPath = null;
-        if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('employee_photos', 'public');
-        }
+        $photoPath = $request->file('photo')->store('employee_photos', 'public');
 
         $employee = Employee::create([
             'en_name' => $request->en_name,
@@ -62,7 +61,7 @@ class EmployeesController extends Controller
             'organization_unit_id' => $request->organization_unit_id,
             'job_position_id' => $request->job_position_id,
             'job_title_category_id' => $request->job_title_category_id,
-            'salary_id' => $request->salary_id,
+            'salary' => $request->salary,
             'martial_status_id' => $request->martial_status_id,
             'nation' => $request->nation,
             'job_position_start_date' => $request->job_position_start_date,
@@ -91,6 +90,9 @@ class EmployeesController extends Controller
 
     public function update(Request $request, Employee $employee) 
     {
+        
+
+
         $validator = Validator::make($request->all(), [
             'en_name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
@@ -102,7 +104,7 @@ class EmployeesController extends Controller
             'organization_unit_id' => 'required|integer',
             'job_position_id' => 'required|integer',
             'job_title_category_id' => 'required|integer',
-            'salary_id' => 'required|integer',
+            'salary' => 'nullable|integer',
             'martial_status_id' => 'required|integer',
             'nation' => 'required|string|max:255',
             'job_position_start_date' => 'nullable|date',
@@ -147,7 +149,7 @@ class EmployeesController extends Controller
             'organization_unit_id' => $request->organization_unit_id,
             'job_position_id' => $request->job_position_id,
             'job_title_category_id' => $request->job_title_category_id,
-            'salary_id' => $request->salary_id,
+            'salary' => $request->salary,
             'martial_status_id' => $request->martial_status_id,
             'nation' => $request->nation,
             'job_position_start_date' => $request->job_position_start_date,

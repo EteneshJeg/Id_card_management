@@ -32,7 +32,7 @@ class OrganizationsController extends Controller
             'mission' => 'required|string|max:255',
             'vision' => 'required|string|max:255',
             'core_value' => 'required|string|max:255',
-            'logo' => 'nullable|string',
+           'logo' => 'nullable|image|mimes:jpg,jpeg,png,ico,gif,svg,webp|max:2048',
             'address' => 'nullable|string|max:255',
             'website' => 'nullable|string',
             'email' => 'required|string|max:255',
@@ -43,6 +43,9 @@ class OrganizationsController extends Controller
             'abbreviation' => 'required|string|max:15',
         ]);
 
+       
+
+
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validation failed',
@@ -50,7 +53,15 @@ class OrganizationsController extends Controller
             ], 422);
         }
 
-        $organization = Organization::create($validator->validated());
+        $validated = $validator->validated();
+
+    // Handle file upload after validation
+    if ($request->hasFile('logo')) {
+        $path = $request->file('logo')->store('logos', 'public');
+        $validated['logo'] = $path;
+    }
+
+        $organization = Organization::create($validated);
 
         return response()->json([
             'message' => 'Organization registered successfully.',
@@ -65,38 +76,49 @@ class OrganizationsController extends Controller
 
     }
     public function update(Request $request, Organization $organization) 
-    {
-        $validator = Validator::make($request->all(), [
-            'en_name' => 'required|string|max:255',
-            'motto' => 'required|string|max:255',
-            'mission' => 'required|string|max:255',
-            'vision' => 'required|string|max:255',
-            'core_value' => 'required|string|max:255',
-            'logo' => 'nullable|string',
-            'address' => 'nullable|string|max:255',
-            'website' => 'nullable|string',
-            'email' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:15',
-            'fax_number' => 'required|string|max:15',
-            'po_box' => 'required|string|max:15',
-            'tin_number' => 'required|string|max:15',
-            'abbreviation' => 'required|string|max:15',
-        ]);
+{
+    // Validate first
+    $validator = Validator::make($request->all(), [
+        'en_name' => 'required|string|max:255',
+        'motto' => 'required|string|max:255',
+        'mission' => 'required|string|max:255',
+        'vision' => 'required|string|max:255',
+        'core_value' => 'required|string|max:255',
+        'logo' => 'nullable|file|mimes:jpg,jpeg,png,ico,gif,svg,webp|max:2048',
+        'address' => 'nullable|string|max:255',
+        'website' => 'nullable|string',
+        'email' => 'required|string|max:255',
+        'phone_number' => 'required|string|max:15',
+        'fax_number' => 'required|string|max:15',
+        'po_box' => 'required|string|max:15',
+        'tin_number' => 'required|string|max:15',
+        'abbreviation' => 'required|string|max:15',
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        $organization->update($validator->validated());
-
+    if ($validator->fails()) {
         return response()->json([
-            'message' => 'Organization updated successfully.',
-            'data' => new OrganizationResource($organization)
-        ], 200);
+            'message' => 'Validation failed',
+            'errors' => $validator->errors(),
+        ], 422);
     }
+
+    // Get validated data
+    $validated = $validator->validated();
+
+    // Handle file upload after validation
+    if ($request->hasFile('logo')) {
+        $path = $request->file('logo')->store('logos', 'public');
+        $validated['logo'] = $path;
+    }
+
+    // Update organization with validated data + logo path if uploaded
+    $organization->update($validated);
+
+    return response()->json([
+        'message' => 'Organization updated successfully.',
+        'data' => new OrganizationResource($organization),
+    ], 200);
+}
 
     public function destroy(Organization $organization) 
     {

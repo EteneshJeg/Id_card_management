@@ -28,6 +28,7 @@ class IdentityCardDetail extends Model
      * @var array
      */
     protected $fillable = [
+                    'template_id',
                   'field_label',
                   'label_length',
                   'field_name',
@@ -38,10 +39,12 @@ class IdentityCardDetail extends Model
                   'text_font_type',
                   'text_font_size',
                   'text_font_color',
+                  'text_gap',
                   'image_file',
                   'image_width',
                   'image_height',
                   'has_mask',
+                  'circle_mask_thickness',
                   'circle_diameter',
                   'circle_positionx',
                   'circle_positiony',

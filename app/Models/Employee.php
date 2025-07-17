@@ -40,7 +40,7 @@ class Employee extends Model
                   'organization_unit_id',
                   'job_position_id',
                   'job_title_category_id',
-                  'salary_id',
+                  'salary',
                   'martial_status_id',
                   'nation',
                   'employment_id',
@@ -115,10 +115,7 @@ class Employee extends Model
      *
      * @return App\Models\Salary
      */
-    public function salary()
-    {
-        return $this->belongsTo('App\Models\Salary','salary_id');
-    }
+    
 
     /**
      * Get the martialStatus for this model.
@@ -177,9 +174,21 @@ class Employee extends Model
      * @return void
      */
     public function setDateOfBirthAttribute($value)
-    {
-        $this->attributes['date_of_birth'] = !empty($value) ? \DateTime::createFromFormat('j/n/Y', $value) : null;
+     {
+    if (empty($value)) {
+        $this->attributes['date_of_birth'] = null;
+    } elseif ($value instanceof \DateTime) {
+        $this->attributes['date_of_birth'] = $value->format('Y-m-d');
+    } else {
+        // Try to parse date, fallback to null if invalid
+        $date = \DateTime::createFromFormat('Y-m-d', $value);
+        if ($date !== false) {
+            $this->attributes['date_of_birth'] = $date->format('Y-m-d');
+        } else {
+            $this->attributes['date_of_birth'] = null; // or handle error
+        }
     }
+}
 
     /**
      * Set the joined_date.
@@ -188,9 +197,27 @@ class Employee extends Model
      * @return void
      */
     public function setJoinedDateAttribute($value)
-    {
-        $this->attributes['joined_date'] = !empty($value) ? \DateTime::createFromFormat('j/n/Y', $value) : null;
+{
+    if (empty($value)) {
+        $this->attributes['joined_date'] = null;
+    } else {
+        // Try parsing both formats:
+        $date = \DateTime::createFromFormat('Y-m-d', $value);
+
+        if ($date === false) {
+            // fallback: try j/n/Y
+            $date = \DateTime::createFromFormat('j/n/Y', $value);
+        }
+
+        if ($date !== false) {
+            $this->attributes['joined_date'] = $date->format('Y-m-d');
+        } else {
+            // Invalid date string - assign null or handle error
+            $this->attributes['joined_date'] = null;
+        }
     }
+}
+
 
     /**
      * Set the job_position_start_date.
@@ -199,9 +226,21 @@ class Employee extends Model
      * @return void
      */
     public function setJobPositionStartDateAttribute($value)
-    {
-        $this->attributes['job_position_start_date'] = !empty($value) ? \DateTime::createFromFormat('j/n/Y', $value) : null;
+     {
+    if (empty($value)) {
+        $this->attributes['job_position_start_date'] = null;
+    } elseif ($value instanceof \DateTime) {
+        $this->attributes['job_position_start_date'] = $value->format('Y-m-d');
+    } else {
+        // Try to parse date, fallback to null if invalid
+        $date = \DateTime::createFromFormat('Y-m-d', $value);
+        if ($date !== false) {
+            $this->attributes['job_position_start_date'] = $date->format('Y-m-d');
+        } else {
+            $this->attributes['job_position_start_date'] = null; // or handle error
+        }
     }
+}
 
     /**
      * Set the job_position_end_date.
@@ -210,9 +249,21 @@ class Employee extends Model
      * @return void
      */
     public function setJobPositionEndDateAttribute($value)
-    {
-        $this->attributes['job_position_end_date'] = !empty($value) ? \DateTime::createFromFormat('j/n/Y', $value) : null;
+     {
+    if (empty($value)) {
+        $this->attributes['job_position_end_date'] = null;
+    } elseif ($value instanceof \DateTime) {
+        $this->attributes['job_position_end_date'] = $value->format('Y-m-d');
+    } else {
+        // Try to parse date, fallback to null if invalid
+        $date = \DateTime::createFromFormat('Y-m-d', $value);
+        if ($date !== false) {
+            $this->attributes['job_position_end_date'] = $date->format('Y-m-d');
+        } else {
+            $this->attributes['job_position_end_date'] = null; // or handle error
+        }
     }
+}
 
     /**
      * Set the id_issue_date.
@@ -220,10 +271,23 @@ class Employee extends Model
      * @param  string  $value
      * @return void
      */
-    public function setIdIssueDateAttribute($value)
-    {
-        $this->attributes['id_issue_date'] = !empty($value) ? \DateTime::createFromFormat('j/n/Y', $value) : null;
+   public function setIdIssueDateAttribute($value)
+{
+    if (empty($value)) {
+        $this->attributes['id_issue_date'] = null;
+    } elseif ($value instanceof \DateTime) {
+        $this->attributes['id_issue_date'] = $value->format('Y-m-d');
+    } else {
+        // Try to parse date, fallback to null if invalid
+        $date = \DateTime::createFromFormat('Y-m-d', $value);
+        if ($date !== false) {
+            $this->attributes['id_issue_date'] = $date->format('Y-m-d');
+        } else {
+            $this->attributes['id_issue_date'] = null; // or handle error
+        }
     }
+}
+
 
     /**
      * Set the id_expire_date.
@@ -233,8 +297,20 @@ class Employee extends Model
      */
     public function setIdExpireDateAttribute($value)
     {
-        $this->attributes['id_expire_date'] = !empty($value) ? \DateTime::createFromFormat('j/n/Y', $value) : null;
+    if (empty($value)) {
+        $this->attributes['id_expire_date'] = null;
+    } elseif ($value instanceof \DateTime) {
+        $this->attributes['id_expire_date'] = $value->format('Y-m-d');
+    } else {
+        // Try to parse date, fallback to null if invalid
+        $date = \DateTime::createFromFormat('Y-m-d', $value);
+        if ($date !== false) {
+            $this->attributes['id_expire_date'] = $date->format('Y-m-d');
+        } else {
+            $this->attributes['id_expire_date'] = null; // or handle error
+        }
     }
+}
 
     /**
      * Get date_of_birth in array format
@@ -243,9 +319,9 @@ class Employee extends Model
      * @return array
      */
     public function getDateOfBirthAttribute($value)
-    {
-        return $value ? Carbon::parse($value)->format('Y-m-d') : null;
-    }
+     {
+    return $value ? Carbon::parse($value)->format('Y-m-d') : null;
+}
     
 
     /**

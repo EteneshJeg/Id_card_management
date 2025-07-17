@@ -28,8 +28,11 @@ class IdentityCardTemplateDetail extends Model
      * @var array
      */
     protected $fillable = [
+                    'employee_id',
                     'identity_card_template_id',
-                    'identity_card_detail_id'
+                    'identity_card_detail_id',
+                    'text_content',
+                    'image_file'
                 ];
 
     /**
@@ -59,6 +62,11 @@ class IdentityCardTemplateDetail extends Model
     public function identityCardDetail(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(IdentityCardDetail::class, 'identity_card_detail_id');
+    }
+
+    public function employeeDetail(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'employee_id');
     }
     /**
      * Get the identityCardDetail for this model.

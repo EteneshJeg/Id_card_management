@@ -16,6 +16,9 @@ use App\Http\Controllers\RegionsController;
 use App\Http\Controllers\ZonesController;
 use App\Http\Controllers\WoredasController;
 
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -268,3 +271,50 @@ Route::group([
     Route::delete('/woreda/{woreda}',[WoredasController::class, 'destroy'])
          ->name('woredas.woreda.destroy');
 });
+Route::get('/storage/{path}', function ($path) {
+    $fullPath = storage_path('app/public/' . $path);
+
+    if (!file_exists($fullPath)) {
+        abort(404);
+    }
+
+    $file = file_get_contents($fullPath);
+    $type = mime_content_type($fullPath);
+
+    return Response::make($file, 200, [
+        'Content-Type' => $type,
+        'Access-Control-Allow-Origin' => '*',
+    ]);
+})->where('path', '.*');
+
+Route::get('/cors-image/{path}', function ($path) {
+    $fullPath = storage_path('app/public/' . $path);
+
+    if (!file_exists($fullPath)) {
+        abort(404);
+    }
+
+    $file = file_get_contents($fullPath);
+    $type = mime_content_type($fullPath);
+
+    return response($file, 200)
+        ->header('Content-Type', $type)
+        ->header('Access-Control-Allow-Origin', '*');
+})->where('path', '.*');
+
+Route::get('/cors-logo/{path}', function ($path) {
+    $fullPath = storage_path('app/public/' . $path);
+
+    if (!file_exists($fullPath)) {
+        abort(404);
+    }
+
+    $file = file_get_contents($fullPath);
+    $type = mime_content_type($fullPath);
+
+    return response($file, 200)
+        ->header('Content-Type', $type)
+        ->header('Access-Control-Allow-Origin', '*');
+})->where('path', '.*');
+
+
