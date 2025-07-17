@@ -31,7 +31,10 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'first_time' => 'nullable|boolean',
             'active' => 'nullable|boolean',
-            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'profile_image' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:4096',
+            'roles'=>'nullable|array',
+            'roles.*'=>'exists:roles,id'
+
         ]);
 
         if ($validator->fails()) {
@@ -54,11 +57,13 @@ class UserController extends Controller
             'active' => $request->active ?? true,
             'profile_image_path' => $imagePath,
         ]);
+        
 
-        $roles = Role::whereIn('name', $request->roles)->get();
-
-
-        $user->assignRole($roles);
+        if ($request->has('roles')) {
+    $roles = Role::whereIn('id', $request->roles)->get();  // fetch by id
+    $user->assignRole($roles);  // this accepts Role models or names
+}
+        
 
         return response()->json([
             'message' => 'User created successfully',
