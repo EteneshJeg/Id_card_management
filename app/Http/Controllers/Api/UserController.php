@@ -74,7 +74,9 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user->profile_image_url = $user->profile_image_path ? asset("storage/{$user->profile_image_path}") : null;
-        return response()->json($user, 200);
+        return response()->json([
+            'user'=>$user,
+        'role'=>$user->getRoleNames(),], 200);
     }
 
     public function update(Request $request, User $user)
@@ -128,5 +130,24 @@ class UserController extends Controller
         return response()->json([
             'message' => 'User deleted successfully',
         ], 200);
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (!is_array($ids) || empty($ids)) {
+            return response()->json(['message' => 'No IDs provided'], 400);
+        }
+
+        $existingIds = User::whereIn('id', $ids)->pluck('id')->toArray();
+
+        if (empty($existingIds)) {
+        return response()->json(['message' => 'Record not found.'], 404);
+    }
+
+        User::whereIn('id', $existingIds)->delete();
+
+        return response()->json(['message' => 'Selected users deleted successfully'], 200);
     }
 }

@@ -25,15 +25,16 @@ use App\Http\Controllers\Api\{
     EmployeeIdentityCardsController
     
 };
-
+use App\Models\Employee;
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::apiResource('organization-units', OrganizationUnitController::class);
+ Route::post('/organization-units/delete-bunch',[OrganizationUnitController::class, 'bulkDestroy']);
 Route::apiResource('job-title-categories', JobTitleCategoriesController::class);
 Route::apiResource('job-position', JobPositionsController::class);
-Route::post('/job-positions/delete-bunch', [JobPositionsController::class, 'deleteBunch']);
+
 
 Route::get('/permissions', function () {
         return Permission::all();
@@ -49,6 +50,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Employees
     Route::apiResource('employees', EmployeesController::class);
+    Route::post('/employees/delete-bunch',[EmployeesController::class, 'bulkDestroy']);
+   
 
     // Identity & Organization
     Route::apiResource('identity-card-details', IdentityCardDetailsController::class);
@@ -56,12 +59,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('identity-card-template-details', IdentityCardTemplateDetailsController::class);
     Route::apiResource('organizations', OrganizationsController::class);
     Route::apiResource('marital-status', MaritalStatusController::class);
-    Route::post('/marital-status/delete-bunch', [MaritalStatusController::class, 'bulkDestroy']);
+    
     
     Route::apiResource('regions', RegionsController::class);
     Route::apiResource('zones', ZonesController::class);
     Route::apiResource('woreda', WoredaController::class);
     Route::apiResource('users', UserController::class);
+     Route::post('/users/delete-bunch',[UserController::class, 'bulkDestroy']);
 
     // Admin-only routes
     Route::middleware('role:admin')->group(function () {

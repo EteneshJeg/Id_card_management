@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Employee;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EmployeeResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
+
 
 class EmployeesController extends Controller
 {
@@ -36,6 +41,14 @@ class EmployeesController extends Controller
       //  $employees = Employee::get();
         if($employees->count() > 0)
         {
+            $today=Carbon::today()->addDays(2);
+            foreach($employees as $employee){
+                if(Carbon::parse($employee->id_expire_date)->lt($today)){
+        $employee->id_status="expired";
+        $employee->save();
+    }
+            }
+    
             return EmployeeResource::collection($employees);
         }
         else 
@@ -46,9 +59,50 @@ class EmployeesController extends Controller
 
     public function store(Request $request) 
     {
+
+        $validator = Validator::make($request->all(), [
+            'en_name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'sex' => 'required|string|in:male,female',
+            'date_of_birth' => 'nullable|date',
+            'joined_date' => 'nullable|date',
+            'user_id'=>'required|integer',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', 
+            'employment_id'=>'required|string',
+            'phone_number' => 'required|string|max:15',
+            'organization_unit_id' => 'required|integer',
+            'job_position_id' => 'required|integer',
+            'job_title_category_id' => 'required|integer',
+            'salary' => 'nullable|integer',
+            'martial_status_id' => 'required|integer',
+            'nation' => 'required|string|max:255',
+            'job_position_start_date' => 'nullable|date',
+            'job_position_end_date' => 'nullable|date',
+            'address' => 'nullable|string|max:255',
+            'house_number' => 'nullable|string|max:50',
+            'region_id' => 'required|integer',
+            'zone_id' => 'required|integer',
+            'woreda_id' => 'required|integer',
+            'status' => 'required|string|max:50',
+            'id_issue_date' => 'nullable|date',
+            'id_expire_date' => 'nullable|date',
+            'id_status' => 'required|string|max:50',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
         // Handle photo upload
         $photoPath = null;
-        $photoPath = $request->file('photo')->store('employee_photos', 'public');
+
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('employee_photos', 'public');
+        }
+
+        
 
         $employee = Employee::create([
             'en_name' => $request->en_name,
@@ -57,6 +111,7 @@ class EmployeesController extends Controller
             'date_of_birth' => $request->date_of_birth,
             'joined_date' => $request->joined_date,
             'photo' => $photoPath, // Store file path
+            'employment_id'=>$request->employment_id,
             'phone_number' => $request->phone_number,
             'organization_unit_id' => $request->organization_unit_id,
             'job_position_id' => $request->job_position_id,
@@ -75,7 +130,14 @@ class EmployeesController extends Controller
             'id_issue_date' => $request->id_issue_date,
             'id_expire_date' => $request->id_expire_date,
             'id_status' => $request->id_status,
+            
         ]);
+
+        $employee_id = DB::getPdo()->lastInsertId();
+
+        $user = User::findOrFail($request->user_id);
+        $user->employee = $employee_id;
+        $user->save(); 
 
         return response()->json([
             'message' => 'Employee registered successfully.',
@@ -84,9 +146,22 @@ class EmployeesController extends Controller
     }
 
     public function show(Employee $employee) 
-    {
-        return new EmployeeResource($employee);
-    }
+{
+    $employee->load([
+        'organizationUnit',
+        'jobPosition',
+        'jobTitleCategory',
+       // 'salary',
+        'maritalStatus',
+        'region',
+        'zone',
+        'woreda',
+        'user' // Add any relationship used in EmployeeResource
+    ]);
+
+    return new EmployeeResource($employee);
+}
+
 
     public function update(Request $request, Employee $employee) 
     {
@@ -99,7 +174,9 @@ class EmployeesController extends Controller
             'sex' => 'required|string|in:male,female',
             'date_of_birth' => 'nullable|date',
             'joined_date' => 'nullable|date',
+            'user_id'=>'required|integer',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Updated validation
+            'employment_id'=>'required|string',
             'phone_number' => 'required|string|max:15',
             'organization_unit_id' => 'required|integer',
             'job_position_id' => 'required|integer',
@@ -145,6 +222,7 @@ class EmployeesController extends Controller
             'date_of_birth' => $request->date_of_birth,
             'joined_date' => $request->joined_date,
             'photo' => $photoPath, // Update file path
+            'employment_id'=>$request->employment_id,
             'phone_number' => $request->phone_number,
             'organization_unit_id' => $request->organization_unit_id,
             'job_position_id' => $request->job_position_id,
@@ -165,6 +243,12 @@ class EmployeesController extends Controller
             'id_status' => $request->id_status,
         ]);
 
+        $employee_id = $employee->id;
+
+        $user = User::findOrFail($request->user_id);
+        $user->employee = $employee_id;
+        $user->save(); 
+
         return response()->json([
             'message' => 'Employee updated Successfully',
             'data' => new EmployeeResource($employee)
@@ -181,5 +265,24 @@ class EmployeesController extends Controller
         return response()->json([
             'message' => 'Employee Deleted Successfully',
         ], 200);
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (!is_array($ids) || empty($ids)) {
+            return response()->json(['message' => 'No IDs provided'], 400);
+        }
+
+        $existingIds = Employee::whereIn('id', $ids)->pluck('id')->toArray();
+
+        if (empty($existingIds)) {
+        return response()->json(['message' => 'Record not found.'], 404);
+    }
+
+        Employee::whereIn('id', $existingIds)->delete();
+
+        return response()->json(['message' => 'Selected employees deleted successfully'], 200);
     }
 }

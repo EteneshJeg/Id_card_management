@@ -22,7 +22,7 @@ class RoleController extends Controller
         ]);
 
 
-        $permissions = Permission::whereIn('name', $request->permissions)->get();
+        $permissions = Permission::whereIn('id', $request->permissions)->get();
 
         $role = Role::create([
             'name' => $request->name,
@@ -36,7 +36,7 @@ class RoleController extends Controller
         }
 
 
-        return response()->json($role, 200);
+        return response()->json($role->load('permissions'), 200);
     }
 
     public function update(Request $request, Role $role)

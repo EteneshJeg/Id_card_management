@@ -104,4 +104,23 @@ class OrganizationUnitController extends Controller
             'message' => 'Organization unit deleted successfully.',
         ], 200);
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (!is_array($ids) || empty($ids)) {
+            return response()->json(['message' => 'No IDs provided'], 400);
+        }
+
+        $existingIds = OrganizationUnit::whereIn('id', $ids)->pluck('id')->toArray();
+
+        if (empty($existingIds)) {
+        return response()->json(['message' => 'Record not found.'], 404);
+    }
+
+        OrganizationUnit::whereIn('id', $existingIds)->delete();
+
+        return response()->json(['message' => 'Selected units deleted successfully'], 200);
+    }
 }

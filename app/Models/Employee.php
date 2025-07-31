@@ -124,7 +124,7 @@ class Employee extends Model
      */
     public function maritalStatus()
     {
-        return $this->belongsTo('App\Models\MaritalStatus','marital_status_id');
+        return $this->belongsTo('App\Models\MaritalStatus','martial_status_id');
     }
 
     /**
@@ -160,6 +160,12 @@ class Employee extends Model
     {
         return $this->belongsTo('App\Models\Woreda','woreda_id');
     }
+
+    public function user()
+{
+    return $this->hasOne(User::class, 'employee', 'id');
+}
+
 
     
     // public function organizationUnits()

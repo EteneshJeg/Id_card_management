@@ -94,4 +94,6 @@ class IdentityCardTemplateDetailsController extends Controller
             'message' => 'Identity Card Template Detail deleted successfully.'
         ], 200);
     }
+
+    
 }

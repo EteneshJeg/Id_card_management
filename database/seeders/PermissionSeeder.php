@@ -30,7 +30,7 @@ class PermissionSeeder extends Seeder
         ];
 
         // CRUD actions for each model
-        $actions = ['create', 'read', 'update', 'delete'];
+        $actions = ['create', 'read', 'update', 'delete','list'];
 
         // Generate permissions
         foreach ($models as $model) {
@@ -59,6 +59,8 @@ class PermissionSeeder extends Seeder
         $employeePermissions = Permission::whereIn('name', [
             'read IdentityCardDetail',
             'read Organization',
+            'list IdentityCardDetail',
+            'list Organization'
         ])->get();
 
         $employeeRole->syncPermissions($employeePermissions);

@@ -26,17 +26,20 @@ class EmployeeResource extends JsonResource
             'joined_date' => $this->joined_date,
             'photo_url' => $this->photo ,
             'phone_number' => $this->phone_number,
+            'employment_id'=>$this->employment_id,
+            'nation'=>$this->nation,
             
             // Relationships
             'organization_unit' => new OrganizationUnitResource($this->whenLoaded('organizationUnit')),
             'job_position' => new JobPositionResource($this->whenLoaded('jobPosition')),
             'job_title_category' => new JobTitleCategoriesResource($this->whenLoaded('jobTitleCategory')),
-            'salary' => new SalaryResource($this->whenLoaded('salary')),
+           // 'salary' => new SalaryResource($this->whenLoaded('salary')),
             'marital_status' => new MaritalStatusResource($this->whenLoaded('maritalStatus')),
             'employee' => new EmployeeResource($this->whenLoaded('employee')),
             'region' => new RegionResource($this->whenLoaded('region')),
             'zone' => new ZoneResource($this->whenLoaded('zone')),
             'woreda' => new WoredaResource($this->whenLoaded('woreda')),
+            'user'=>new UserResource($this->whenLoaded('user')),
 
             // Remaining fields
             'status' => $this->status,
