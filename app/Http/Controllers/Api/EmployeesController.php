@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Employee;
 use App\Models\User;
+use App\Models\EmployeeIdentityCards;
+use App\Models\IdentityCardTemplateDetail;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EmployeeResource;
 use Illuminate\Http\Request;
@@ -43,7 +45,7 @@ class EmployeesController extends Controller
         {
             $today=Carbon::today()->addDays(2);
             foreach($employees as $employee){
-                if(Carbon::parse($employee->id_expire_date)->lt($today)){
+                if($employee->id_expire_date&&Carbon::parse($employee->id_expire_date)->lt($today)){
         $employee->id_status="expired";
         $employee->save();
     }
@@ -257,10 +259,15 @@ class EmployeesController extends Controller
 
     public function destroy(Employee $employee) 
     {
+         EmployeeIdentityCards::where('employee_id',$employee->id)->delete();
+         IdentityCardTemplateDetail::where('employee_id',$employee->id)->delete();
         // Delete photo if exists
         if ($employee->photo) {
             Storage::disk('public')->delete($employee->photo);
         }
+        
+        
+
         $employee->delete();
         return response()->json([
             'message' => 'Employee Deleted Successfully',

@@ -28,6 +28,11 @@ class EmployeeResource extends JsonResource
             'phone_number' => $this->phone_number,
             'employment_id'=>$this->employment_id,
             'nation'=>$this->nation,
+            'address'=>$this->address,
+            'house_number'=>$this->house_number,
+            'salary'=>$this->salary,
+            'job_position_start_date'=>$this->job_position_start_date,
+            'job_position_end_date'=>$this->job_position_end_date,
             
             // Relationships
             'organization_unit' => new OrganizationUnitResource($this->whenLoaded('organizationUnit')),

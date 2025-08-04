@@ -88,6 +88,8 @@ class UserController extends Controller
             'first_time' => 'sometimes|required|boolean',
             'active' => 'sometimes|required|boolean',
             'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'roles'=>'nullable|array',
+            'roles.*'=>'exists:roles,id'
         ]);
 
         if ($validator->fails()) {
@@ -112,6 +114,11 @@ class UserController extends Controller
 
         $user->refresh();
         $user->profile_image_url = $user->profile_image_path ? asset("storage/{$user->profile_image_path}") : null;
+
+         if ($request->has('roles')) {
+    $roles = Role::whereIn('id', $request->roles)->get();  // fetch by id
+    $user->syncRoles($roles);  // this accepts Role models or names
+}
 
         return response()->json([
             'message' => 'User updated successfully',
